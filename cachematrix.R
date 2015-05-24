@@ -3,8 +3,8 @@
 ## the scenario.
 ## -get retrieves the matrix set by function x
 ##
-## -set updates/replaces the matrix set by function x, and then NULLs the
-##  previously stored inverted matrix stored in m
+## -set can be used to replace our input matrix x with it's own input y
+## and then NULL any previously stored inverted matrix cached in m
 ##
 ## -setInv stores the inverse of the matrix input of x
 ##  (via the solve function) in m
@@ -14,14 +14,25 @@
 
 makeCacheMatrix <- function(x = matrix()) {
 
-    m <- NULL
+    m <- NULL  #ensure m is clear in our workspace
+
     set <- function(y) {
+            #replace input from x with input y
             x <<- y
+            #NULL any cached inverse matrix
             m <<- NULL
     }
+    #retrieves the original matrix input x
     get <- function() x
+
+    #caches the inverse matrix of x in m
     setInv <- function(solve) m <<- solve
+
+    #retrieves the cached matrix from m
     getInv <- function() m
+
+    #create a list of our functions so cacheSolve can call them with $ notation
+    #e.g. listname$function()
     list(set = set, get = get,
          setInv = setInv,
          getInv = getInv)
